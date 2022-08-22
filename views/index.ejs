@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Posts</title>
+    <link rel="stylesheet" href="css/posts.css">
+</head>
+<body>
+    <div id="posts">
+        <% for (var i=0; i<posts.length; i++){ %>
+            <div class="posts">
+                <h1><%= posts[i].title %> </h1>
+                <div class="md" id="<% i %>"></div>
+            </div> 
+        <%}%>
+    </div>
+    <script>
+        var g
+        const req=new XMLHttpRequest()
+        try{
+            req.open('POST', '/test')
+            req.addEventListener('load', () => {
+                console.log(req.response)
+                var n = document.getElementsByClassName('md')
+                var g=JSON.parse(req.response)
+                for(let i=0; i<n.length; i++){
+                    n[i].innerHTML=g[i].md
+                }
+            });
+            req.addEventListener('error', () => console.error('XHR error'));
+            req.send()
+        }catch(err){
+            console.error(req.status)
+        }
+    </script>
+</body>
+</html>
