@@ -26,16 +26,17 @@ const query = (command, method = 'all') => {
 };
 db.serialize(async () => {
     await query(`CREATE TABLE IF NOT EXISTS posts (
-            id    int PRIMARY KEY NOT NULL,
-            title text NOT NULL,
-            md text NOT NULL
+            id    INTEGER PRIMARY KEY AUTOINCREMENT,
+            title varchar(255) NOT NULL,
+            desc  text         NOT NULL,
+            md    text         NOT NULL
         );`
     , 'run');
 });
 
 app.get('/', (req, res)=>{
     db.serialize(async ()=>{
-        let posts = await query('SELECT * FROM POSTS')
+        let posts = await query('SELECT * FROM posts')
         await res.render('index', {posts: posts})
     })
 })
@@ -44,6 +45,19 @@ app.post('/test',(req, res)=>{
         await console.log('post req success')
         let c=await query('select md from posts')
         await res.status(200).send(c).end()
+    })
+})
+app.get('/createpost', (req, res)=>{
+    res.render('createpost')
+})
+app.post('/newpost', (req, res)=>{
+    db.serialize(async()=>{
+        var n=await md.render(req.body.body)
+        await db.run(`
+            insert into posts (title, desc, md) 
+            values (?, ?, ?);
+        `, [req.body.title, req.body.desc, req.body.body])
+        await res.sendStatus(200).end()
     })
 })
 app.listen(process.env.PORT || 6047, ()=>{

@@ -1,4 +1,5 @@
-var g
+var g;
+console.log('test')
 const req=new XMLHttpRequest()
 try{
     req.open('POST', '/test')
