@@ -46,6 +46,6 @@ app.post('/test',(req, res)=>{
         await res.status(200).send(c).end()
     })
 })
-app.listen(6047, ()=>{
+app.listen(process.env.PORT || 6047, ()=>{
     console.log('http://localhost:6047/')
 })
